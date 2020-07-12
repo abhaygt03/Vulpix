@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vulpix/resources/firebase_repository.dart';
 import 'package:vulpix/screens/login_screen.dart';
 import 'package:vulpix/screens/home_screen.dart';

@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vulpix/resources/firebase_repository.dart';
 import 'package:vulpix/screens/home_screen.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:vulpix/utils/universalvariables.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,27 +13,42 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   FirebaseRepository _repository = FirebaseRepository();
-
+  bool isLoginPressed=false;
   @override
   Widget build(BuildContext context) {
+    _repository.signOut();
     return Scaffold(
-      body: loginButton(),
-    );
+      backgroundColor: UniversalVariables.blackColor,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+       children: <Widget>[
+         loginButton(),
+      isLoginPressed?Center(child:CircularProgressIndicator(),):Container(),
+       ], 
+      ));
   }
 
   Widget loginButton() {
-    return FlatButton(
+    return Shimmer.fromColors(
+      child:  FlatButton(
       padding: EdgeInsets.all(35),
-      child: Text(
+      child:
+      Text(
         "LOGIN",
         style: TextStyle(
             fontSize: 35, fontWeight: FontWeight.w900, letterSpacing: 1.2),
       ),
       onPressed: () { performLogin();},
-    );
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    ), 
+    baseColor: Colors.white, 
+    highlightColor: UniversalVariables.senderColor);
   }
 
   void performLogin() {
+    setState(() {
+         isLoginPressed=true;
+       });
     _repository.signIn().then((FirebaseUser user) {
       if (user != null)
         authenticateUser(user);
@@ -40,6 +58,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void authenticateUser(FirebaseUser user) {
+     setState(() {
+      isLoginPressed=false;
+    });
     _repository.authenticateUser(user).then((isNewUser) {
       if (isNewUser) {
         _repository.addDataToDb(user).then((value) {
