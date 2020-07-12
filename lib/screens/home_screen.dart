@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vulpix/screens/pageview/chatListScreen.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,10 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return  Scaffold(
       backgroundColor: UniversalVariables.blackColor,
       body: PageView(children: <Widget>[
-        Center(child: Text("Chat List",style: TextStyle(color: Colors.white),),),
+        Container(child: ChatListScreen(),),
         Center(child: Text("Call Logs",style:TextStyle(color: Colors.white),),),
         Center(child: Text("Contact Screen",style:TextStyle(color: Colors.white)),)
       ],
+      
       controller:pageController,
       onPageChanged: onpagechange),
       bottomNavigationBar: Container(

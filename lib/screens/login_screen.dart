@@ -29,20 +29,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget loginButton() {
-    return Shimmer.fromColors(
-      child:  FlatButton(
+    return   FlatButton(
       padding: EdgeInsets.all(35),
-      child:
-      Text(
+      child:Shimmer.fromColors(
+      child:Text(
         "LOGIN",
         style: TextStyle(
             fontSize: 35, fontWeight: FontWeight.w900, letterSpacing: 1.2),
       ),
+      baseColor: Colors.white, 
+    highlightColor: UniversalVariables.senderColor),
       onPressed: () { performLogin();},
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    ), 
-    baseColor: Colors.white, 
-    highlightColor: UniversalVariables.senderColor);
+    ); 
+    
   }
 
   void performLogin() {
