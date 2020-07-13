@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vulpix/resources/firebase_repository.dart';
 import 'package:vulpix/screens/login_screen.dart';
 import 'package:vulpix/screens/home_screen.dart';
+import 'package:vulpix/screens/searchscreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,6 +22,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         title: "vulpix",
         debugShowCheckedModeBanner: false,
+        initialRoute: "/",
+        routes: {
+          '/search_screen':(context)=>SearchScreen(),
+        },
         home: FutureBuilder(
           future: _repository.getCurrentUser(),
           builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
