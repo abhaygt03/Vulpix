@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:vulpix/models/user.dart';
 import 'package:vulpix/resources/firebase_repository.dart';
+import 'package:vulpix/screens/chat_screens/chatscreen.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/widgets/custom_tile.dart';
 
@@ -50,7 +51,7 @@ TextEditingController searchController=TextEditingController();
                 query=value;
               });
             },
-            cursorColor: UniversalVariables.blackColor,
+            cursorColor: Colors.white,
             autofocus: true,
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -97,7 +98,13 @@ TextEditingController searchController=TextEditingController();
           
                   return CustomTile(
                     mini:false,
-                    onTap: (){},
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context)=>ChatScreen(
+                          receiver:searchedUser
+                        )));
+                    },
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(searchedUser.profilePhoto),
                       backgroundColor: Colors.grey,), 
