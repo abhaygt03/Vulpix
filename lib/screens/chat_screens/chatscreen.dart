@@ -175,7 +175,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
            child: IconButton(
             icon: Icon(Icons.send,color: Colors.white,), 
-            onPressed: (){})
+            onPressed: (){
+              sendMessage();
+            })
           ):
             Container(),
             
@@ -251,6 +253,8 @@ class _ChatScreenState extends State<ChatScreen> {
       }
     );
   }
+
+  sendMessage(){}
 
   CustomAppBar customAppBar(context)
   {
