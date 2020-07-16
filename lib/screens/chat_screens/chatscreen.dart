@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:vulpix/const/const.dart';
 import 'package:vulpix/models/message.dart';
 import 'package:vulpix/models/user.dart';
 import 'package:vulpix/utils/universalvariables.dart';
@@ -74,6 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
         return ListView.builder(
         padding: EdgeInsets.all(10),
         itemCount: snapshot.data.documents.length,
+        reverse: true,
         itemBuilder:(context,index){
           return chatMessageItem(snapshot.data.documents[index]);
         }
@@ -83,21 +85,26 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
     Container chatMessageItem(DocumentSnapshot snapshot){
+
+      Message _message=Message.fromMap(snapshot.data);
         return Container(
           margin: EdgeInsets.symmetric(vertical: 15),
           child: Container(
-            alignment: snapshot['senderId']==_currentUserId? 
+            alignment: _message.senderId==_currentUserId? 
             Alignment.centerRight:
             Alignment.centerLeft,
             
-            child:snapshot['senderId']==_currentUserId? senderLayout(snapshot):receiverLayout(snapshot),
+            child:_message.senderId==_currentUserId? 
+            messageLayout(_message,senderBubble):
+
+          messageLayout(_message,receiverBubble),
           )
         );
     }
 
-    Widget senderLayout(DocumentSnapshot snapshot)
+    Widget messageLayout(Message message,BorderRadiusGeometry brad)
     {
-      Radius msgradius=Radius.circular(10);
+      
       return Container(
         margin: EdgeInsets.only(top:12),
         constraints: BoxConstraints(
@@ -105,42 +112,13 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         decoration: BoxDecoration(
           color:UniversalVariables.senderColor,
-          borderRadius: BorderRadius.only(
-            topLeft: msgradius,
-            topRight: msgradius,
-            bottomLeft: msgradius,
-          ),
+          borderRadius: brad,
         ),
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Text(
-            snapshot['message'],
+            message.message,
           style: TextStyle(color:Colors.white,fontSize: 16),),)
-      );
-    }
-
-    Widget receiverLayout(DocumentSnapshot snapshot)
-    {
-      Radius msgradius=Radius.circular(10);
-      return Container(
-        margin: EdgeInsets.only(top:12),
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width*0.1
-        ),
-        decoration: BoxDecoration(
-          color:UniversalVariables.receiverColor,
-          borderRadius: BorderRadius.only(
-            bottomRight: msgradius,
-            topRight: msgradius,
-            bottomLeft: msgradius,
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Text(
-            snapshot['message'],
-            softWrap: true,
-          style: TextStyle(color:Colors.white,fontSize: 16,),),)
       );
     }
 
@@ -296,7 +274,7 @@ class _ChatScreenState extends State<ChatScreen> {
     Message _message=Message(
       receiverId: widget.receiver.uid,
       senderId: sender.uid,
-      timestamp: FieldValue.serverTimestamp(),
+      timestamp: Timestamp.now(),
       message: text,
       type: 'text',
     );
@@ -305,6 +283,7 @@ class _ChatScreenState extends State<ChatScreen> {
       isWriting=false;
     });
 
+    textFieldController.text="";
     _repository.addMessageToDb(_message,sender,widget.receiver);
   }
 
