@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:vulpix/models/message.dart';
 import 'package:vulpix/models/user.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/widgets/appbar.dart';
 import 'package:vulpix/widgets/custom_tile.dart';
+import 'package:vulpix/resources/firebase_repository.dart';
+
+FirebaseRepository _repository=FirebaseRepository();
 
 class ChatScreen extends StatefulWidget {
   final User receiver;
@@ -13,6 +18,9 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
 
+  User sender;
+  String _currentUserId;
+
   bool isWriting=false;
 
   setWritingTo(bool v)
@@ -21,6 +29,22 @@ class _ChatScreenState extends State<ChatScreen> {
               isWriting=v;
             });
           }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _repository.getCurrentUser().then((value) {
+      _currentUserId=value.uid;   
+
+      setState(() {
+        sender=User(
+          name:value.displayName,
+          profilePhoto: value.photoUrl,
+          uid: value.uid );
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +278,23 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  sendMessage(){}
+  sendMessage(){
+    String text=textFieldController.text;
+
+    Message _message=Message(
+      receiverId: widget.receiver.uid,
+      senderId: sender.uid,
+      timestamp: FieldValue.serverTimestamp(),
+      message: text,
+      type: 'text',
+    );
+
+    setState(() {
+      isWriting=false;
+    });
+
+    _repository.addMessageToDb(_message,sender,widget.receiver);
+  }
 
   CustomAppBar customAppBar(context)
   {
