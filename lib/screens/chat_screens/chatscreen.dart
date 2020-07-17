@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:vulpix/const/const.dart';
+import 'package:vulpix/enum/view_state.dart';
 import 'package:vulpix/models/message.dart';
 import 'package:vulpix/models/user.dart';
+import 'package:vulpix/provider/image_upload_provider.dart';
 import 'package:vulpix/utils/universalvariables.dart';
+import 'package:vulpix/utils/utils.dart';
 import 'package:vulpix/widgets/appbar.dart';
 import 'package:vulpix/widgets/custom_tile.dart';
 import 'package:vulpix/resources/firebase_repository.dart';
@@ -25,6 +32,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   bool isWriting=false;
   bool showEmojiPicker=false;
+
+  ImageUploadProvider _imageUploadProvider;
 
   FocusNode textFieldFocus=FocusNode();
 
@@ -68,6 +77,8 @@ showEmojiContainer(){
 
   @override
   Widget build(BuildContext context) {
+    _imageUploadProvider=Provider.of<ImageUploadProvider>(context);
+
     return Scaffold(
       backgroundColor: UniversalVariables.blackColor,
       appBar: customAppBar(context),
@@ -76,7 +87,14 @@ showEmojiContainer(){
           Flexible(         //Or we can use expandable
             child: messageList(),
           ),
+
+          _imageUploadProvider.getViewState==ViewState.LOADING?
+          Container(alignment: Alignment.centerRight,
+          margin: EdgeInsets.only(right: 15),
+          child: CircularProgressIndicator(),)
+          :Container(),
           chatControls(),
+
           showEmojiPicker?Container(child: emojiContainer(),):Container(),
         ],
       ),
@@ -101,6 +119,18 @@ showEmojiContainer(){
       recommendKeywords: ["face","happy","sad","party"],
       numRecommended: 50,
     );
+  }
+
+  pickImage(ImageSource source) async {
+      File selectedImage=await Utils.pickImage(source: source);
+
+      _repository.uploadImage(
+        selectedImage,
+        _currentUserId,
+        widget.receiver.uid,
+        _imageUploadProvider,
+      );
+
   }
   
   Widget messageList(){
@@ -135,6 +165,8 @@ showEmojiContainer(){
     Container chatMessageItem(DocumentSnapshot snapshot){
 
       Message _message=Message.fromMap(snapshot.data);
+      EdgeInsetsGeometry pad=_message.type=="image"?EdgeInsets.all(6):EdgeInsets.all(10);
+       
         return Container(
           margin: EdgeInsets.symmetric(vertical: 15),
           child: Container(
@@ -143,14 +175,14 @@ showEmojiContainer(){
             Alignment.centerLeft,
             
             child:_message.senderId==_currentUserId? 
-            messageLayout(_message,senderBubble):
+            messageLayout(_message,senderBubble,pad):
 
-          messageLayout(_message,receiverBubble),
+          messageLayout(_message,receiverBubble,pad),
           )
         );
     }
 
-    Widget messageLayout(Message message,BorderRadiusGeometry brad)
+    Widget messageLayout(Message message,BorderRadiusGeometry brad,EdgeInsetsGeometry pad)
     {
       
       return Container(
@@ -163,8 +195,23 @@ showEmojiContainer(){
           borderRadius: brad,
         ),
         child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Text(
+          padding: pad,
+          child: 
+          message.type=="image"?
+          message.photoUrl!=null?
+          // SizedBox(child: ClipRRect(child: Image.network(message.photoUrl),borderRadius: BorderRadius.circular(5),),height: 220,)
+         Container(
+                  height: 270,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(message.photoUrl),
+                      fit: BoxFit.cover
+                      ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),)
+          :Text("Image not found!")
+          :Text(
             message.message,
           style: TextStyle(color:Colors.white,fontSize: 16),),)
       );
@@ -248,7 +295,9 @@ showEmojiContainer(){
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: Icon(Icons.keyboard_voice,size: 30)),
 
-           isWriting ?Container(): Icon(Icons.camera_alt,size: 30),
+           isWriting ?Container(): GestureDetector(
+             child: Icon(Icons.camera_alt,size: 30),
+            onTap: ()=>pickImage(ImageSource.camera)),
 
           isWriting? Container(
             margin:EdgeInsets.only(left: 10),
@@ -303,7 +352,10 @@ showEmojiContainer(){
                   ModalTile(
                     icon: Icons.image,
                     title: "Media",
-                    subtitle: "Share photos and videos",),
+                    subtitle: "Share photos and videos",
+                    onTap: (){
+                      pickImage(ImageSource.gallery);
+                      Navigator.pop(context);},),
 
                     ModalTile(
                     icon: Icons.tab,
@@ -386,11 +438,13 @@ showEmojiContainer(){
    final String title;
    final String subtitle;
    final IconData icon;
+   final Function onTap;
    
    const ModalTile({
      this.icon,
      this.subtitle,
      this.title,
+     this.onTap,
    });
 
     @override
@@ -398,6 +452,7 @@ showEmojiContainer(){
       return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15),
                     child: CustomTile(mini:false,
+                    onTap: onTap,
                     leading: Container(
                       margin: EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(

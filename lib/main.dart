@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vulpix/provider/image_upload_provider.dart';
 import 'package:vulpix/resources/firebase_repository.dart';
 import 'package:vulpix/screens/login_screen.dart';
 import 'package:vulpix/screens/home_screen.dart';
@@ -19,25 +21,28 @@ class _MyAppState extends State<MyApp> {
   FirebaseRepository _repository = FirebaseRepository();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        brightness: Brightness.dark,
-      ),
-        title: "vulpix",
-        debugShowCheckedModeBanner: false,
-        initialRoute: "/",
-        routes: {
-          '/search_screen':(context)=>SearchScreen(),
-        },
-        home: FutureBuilder(
-          future: _repository.getCurrentUser(),
-          builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-            if (snapshot.hasData) {
-              return HomeScreen();
-            } else {
-              return LoginScreen();
-            }
+    return ChangeNotifierProvider<ImageUploadProvider>(
+        create: (context)=>ImageUploadProvider(),
+          child: MaterialApp(
+        theme: ThemeData(
+          brightness: Brightness.dark,
+        ),
+          title: "vulpix",
+          debugShowCheckedModeBanner: false,
+          initialRoute: "/",
+          routes: {
+            '/search_screen':(context)=>SearchScreen(),
           },
-        ));
+          home: FutureBuilder(
+            future: _repository.getCurrentUser(),
+            builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+              if (snapshot.hasData) {
+                return HomeScreen();
+              } else {
+                return LoginScreen();
+              }
+            },
+          )),
+    );
   }
 }

@@ -35,6 +35,17 @@ class Message{
     return map;
   }
 
+  Map toImagemap(){
+     var map=Map<String,dynamic>();
+    map['senderId']=this.senderId;
+    map['recerverid']=this.receiverId;
+    map['message']=this.message;
+    map['type']=this.type;
+    map['timestamp']=this.timestamp;
+    map['photoUrl']=this.photoUrl;
+    return map;
+  }
+
   Message.fromMap(Map<String,dynamic> map){
 
     this.timestamp=map['timestamp'];
@@ -42,6 +53,7 @@ class Message{
     this.receiverId=map['receiverId'];
     this.message=map['message'];
     this.type=map['type'];
+    this.photoUrl=map['photoUrl'];
   }
 
 }
