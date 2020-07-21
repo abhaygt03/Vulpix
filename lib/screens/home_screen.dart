@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
+import 'package:vulpix/provider/userprovider.dart';
+import 'package:vulpix/screens/call_screens/pick_up/pickup_layout.dart';
 import 'package:vulpix/screens/pageview/chatListScreen.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 
@@ -11,10 +15,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   PageController pageController;
   int _page=0;
+
+  UserProvider userProvider;
+
   @override
   void initState() {
 
     super.initState();
+    
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+    userProvider=Provider.of<UserProvider>(context,listen:false);
+    userProvider.refreshUser();
+
+     });
+
     pageController=PageController();
   }
 
@@ -31,29 +45,31 @@ class _HomeScreenState extends State<HomeScreen> {
   
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      backgroundColor: UniversalVariables.blackColor,
-      body: PageView(children: <Widget>[
-        Container(child: ChatListScreen(),),
-        Center(child: Text("Call Logs",style:TextStyle(color: Colors.white),),),
-        Center(child: Text("Contact Screen",style:TextStyle(color: Colors.white)),)
-      ],
-      
-      controller:pageController,
-      onPageChanged: onpagechange),
-      bottomNavigationBar: Container(
-        child:Padding(padding: EdgeInsets.symmetric(vertical:10),
-        child: CupertinoTabBar(backgroundColor: UniversalVariables.blackColor,
-        items: <BottomNavigationBarItem>[
-
-          buildBottomNavigationBarItem(0,"Chats",Icons.chat),
-          buildBottomNavigationBarItem(1,"Calls",Icons.call),
-          buildBottomNavigationBarItem(2,"Contacts",Icons.contact_phone),
-
+    return  PickupLayout(
+       scaffold:Scaffold(
+        backgroundColor: UniversalVariables.blackColor,
+        body: PageView(children: <Widget>[
+          Container(child: ChatListScreen(),),
+          Center(child: Text("Call Logs",style:TextStyle(color: Colors.white),),),
+          Center(child: Text("Contact Screen",style:TextStyle(color: Colors.white)),)
         ],
-        onTap: navigationTapped,
-        currentIndex: _page,
-        ),
+        
+        controller:pageController,
+        onPageChanged: onpagechange),
+        bottomNavigationBar: Container(
+          child:Padding(padding: EdgeInsets.symmetric(vertical:10),
+          child: CupertinoTabBar(backgroundColor: UniversalVariables.blackColor,
+          items: <BottomNavigationBarItem>[
+
+            buildBottomNavigationBarItem(0,"Chats",Icons.chat),
+            buildBottomNavigationBarItem(1,"Calls",Icons.call),
+            buildBottomNavigationBarItem(2,"Contacts",Icons.contact_phone),
+
+          ],
+          onTap: navigationTapped,
+          currentIndex: _page,
+          ),
+          ),
         ),
       ),
     );

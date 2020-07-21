@@ -2,9 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vulpix/models/call.dart';
 
 class CallMethods{
-  
+
   final CollectionReference callCollection=
         Firestore.instance.collection("call");
+
+  Stream<DocumentSnapshot> callStream({String uid})=>
+  callCollection.document(uid).snapshots();
+
 
   Future<bool> makeCall({Call call}) async {
 

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -14,6 +13,7 @@ class FirebaseMethods {
   GoogleSignIn _googleSignIn =GoogleSignIn();
   static final Firestore firestore=Firestore.instance;
   StorageReference _storageReference;
+  static final CollectionReference _userCollection= firestore.collection("users");
 
   User user=User();
 
@@ -21,6 +21,15 @@ class FirebaseMethods {
     FirebaseUser currentUser;
     currentUser = await _auth.currentUser();
     return currentUser;
+  }
+
+  Future<User> getUserDetails() async{
+        FirebaseUser currentUser=await getCurrentUser();
+
+        DocumentSnapshot documentSnapshot=await _userCollection.document(currentUser.uid).get();
+
+        return User.fromMap(documentSnapshot.data);
+
   }
 
   Future<FirebaseUser> signIn() async{

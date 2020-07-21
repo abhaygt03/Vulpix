@@ -35,4 +35,6 @@ class FirebaseRepository {
                      receiverId,
                      imageUploadProvider);
 
+  Future<User> getUserDetails()=>_firebaseMethods.getUserDetails();
+
 }
