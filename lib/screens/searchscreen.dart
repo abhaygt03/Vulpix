@@ -67,7 +67,7 @@ TextEditingController searchController=TextEditingController();
                 },
               ),
               border: InputBorder.none,
-              hintText: "Search...",
+              hintText: "Search",
               hintStyle: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
