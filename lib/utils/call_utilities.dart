@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:vulpix/models/call.dart';
 import 'package:vulpix/models/user.dart';
@@ -24,7 +25,7 @@ static dial({User from,User to,context}) async {
 
   if(callMade){
     Navigator.push(context,
-    MaterialPageRoute(builder: (context)=>CallScreen(call: call)));
+    MaterialPageRoute(builder: (context)=>CallScreen(call: call,role: ClientRole.Broadcaster,)));
   }
 }
 }

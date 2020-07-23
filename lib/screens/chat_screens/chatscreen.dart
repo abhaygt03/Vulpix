@@ -11,6 +11,7 @@ import 'package:vulpix/models/message.dart';
 import 'package:vulpix/models/user.dart';
 import 'package:vulpix/provider/image_upload_provider.dart';
 import 'package:vulpix/utils/call_utilities.dart';
+import 'package:vulpix/utils/permissions.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/utils/utils.dart';
 import 'package:vulpix/widgets/appbar.dart';
@@ -426,10 +427,12 @@ showEmojiContainer(){
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.video_call),
-          onPressed: ()=>CallUtils.dial(
+          onPressed: () async =>
+          await Permissions.cameraAndMicrophonePermissionsGranted()?
+          CallUtils.dial(
             from: sender,
             to: widget.receiver,
-            context: context),),
+            context: context):{},),
 
           IconButton(
           icon: Icon(Icons.phone),

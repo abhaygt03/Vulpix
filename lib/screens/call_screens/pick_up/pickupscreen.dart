@@ -1,7 +1,9 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:vulpix/models/call.dart';
 import 'package:vulpix/resources/call_methods.dart';
 import 'package:vulpix/screens/call_screens/callscreen.dart';
+import 'package:vulpix/utils/permissions.dart';
 
 class PickupScreen extends StatelessWidget {
  final Call call;
@@ -60,11 +62,12 @@ class PickupScreen extends StatelessWidget {
                  IconButton(
                       icon: Icon(Icons.call),
                       color: Colors.green,
-                      onPressed: () {
+                      onPressed: () async{
+                        await Permissions.cameraAndMicrophonePermissionsGranted()?
                         Navigator.push(context, 
                         MaterialPageRoute(
-                          builder: (context)=>CallScreen(call: call),
-                          ));
+                          builder: (context)=>CallScreen(call: call,role: ClientRole.Audience,),
+                          )):{};
                       },
                     ),
                     
