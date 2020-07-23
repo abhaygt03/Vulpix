@@ -1,4 +1,5 @@
 android/app/google-services.json
+lib/configs/agora_configs.dart
 # Miscellaneous
 *.class
 *.log
