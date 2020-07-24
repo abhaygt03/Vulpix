@@ -66,7 +66,7 @@ class PickupScreen extends StatelessWidget {
                         await Permissions.cameraAndMicrophonePermissionsGranted()?
                         Navigator.push(context, 
                         MaterialPageRoute(
-                          builder: (context)=>CallScreen(call: call,role: ClientRole.Audience,),
+                          builder: (context)=>CallScreen(call: call,role: ClientRole.Broadcaster,),
                           )):{};
                       },
                     ),
