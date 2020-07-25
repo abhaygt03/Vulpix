@@ -10,6 +10,7 @@ import 'package:vulpix/enum/view_state.dart';
 import 'package:vulpix/models/message.dart';
 import 'package:vulpix/models/user.dart';
 import 'package:vulpix/provider/image_upload_provider.dart';
+import 'package:vulpix/screens/call_screens/pick_up/pickup_layout.dart';
 import 'package:vulpix/utils/call_utilities.dart';
 import 'package:vulpix/utils/permissions.dart';
 import 'package:vulpix/utils/universalvariables.dart';
@@ -81,26 +82,28 @@ showEmojiContainer(){
   Widget build(BuildContext context) {
     _imageUploadProvider=Provider.of<ImageUploadProvider>(context);
 
-    return Scaffold(
-      backgroundColor: UniversalVariables.blackColor,
-      appBar: customAppBar(context),
-      body: Column( 
-        children: <Widget>[
-          Flexible(         //Or we can use expandable
-            child: messageList(),
-          ),
+    return PickupLayout(
+          scaffold: Scaffold(
+        backgroundColor: UniversalVariables.blackColor,
+        appBar: customAppBar(context),
+        body: Column( 
+          children: <Widget>[
+            Flexible(         //Or we can use expandable
+              child: messageList(),
+            ),
 
-          _imageUploadProvider.getViewState==ViewState.LOADING?
-          Container(alignment: Alignment.centerRight,
-          margin: EdgeInsets.only(right: 15),
-          child: CircularProgressIndicator(),)
-          :Container(),
-          chatControls(),
+            _imageUploadProvider.getViewState==ViewState.LOADING?
+            Container(alignment: Alignment.centerRight,
+            margin: EdgeInsets.only(right: 15),
+            child: CircularProgressIndicator(),)
+            :Container(),
+            chatControls(),
 
-          showEmojiPicker?Container(child: emojiContainer(),):Container(),
-        ],
-      ),
-      );
+            showEmojiPicker?Container(child: emojiContainer(),):Container(),
+          ],
+        ),
+        ),
+    );
       
   }
 

@@ -176,7 +176,7 @@ class NewChatButton extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      child: Icon(Icons.send,
+      child: Icon(Icons.message,
       color: Colors.white,
       size: 25,
      ),
