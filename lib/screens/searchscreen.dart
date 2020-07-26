@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:vulpix/models/user.dart';
-import 'package:vulpix/resources/firebase_repository.dart';
+import 'package:vulpix/resources/auth_methods.dart';
 import 'package:vulpix/screens/chat_screens/chatscreen.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/widgets/custom_tile.dart';
 
-FirebaseRepository _repository=FirebaseRepository();
+  AuthMethods _authMethods = AuthMethods();
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -23,8 +23,8 @@ TextEditingController searchController=TextEditingController();
   void initState() {
  
     super.initState();
-    _repository.getCurrentUser().then((FirebaseUser user){
-       _repository.fetchAllUsers(user).then((List<User> value) {
+    _authMethods.getCurrentUser().then((FirebaseUser user){
+       _authMethods.fetchAllUsers(user).then((List<User> value) {
        setState((){
           userList=value;
        });

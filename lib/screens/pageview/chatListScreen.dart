@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vulpix/resources/firebase_repository.dart';
+import 'package:vulpix/resources/auth_methods.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/utils/utils.dart';
 import 'package:vulpix/widgets/appbar.dart';
@@ -10,7 +10,7 @@ class ChatListScreen extends StatefulWidget {
   _ChatListScreenState createState() => _ChatListScreenState();
 }
 
-final FirebaseRepository _repository=FirebaseRepository();
+AuthMethods _authMethods = AuthMethods();
 
 class _ChatListScreenState extends State<ChatListScreen> {
 
@@ -21,7 +21,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
   void initState() {
 
     super.initState();
-    _repository.getCurrentUser().then((user) => {
+    _authMethods.getCurrentUser().then((user) => {
       setState((){
         currentUserid=user.uid;
         initials=Utils.getInitials(user.displayName);

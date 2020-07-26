@@ -17,9 +17,10 @@ import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/utils/utils.dart';
 import 'package:vulpix/widgets/appbar.dart';
 import 'package:vulpix/widgets/custom_tile.dart';
-import 'package:vulpix/resources/firebase_repository.dart';
+import 'package:vulpix/resources/storage_methods.dart';
+import 'package:vulpix/resources/auth_methods.dart';
+import 'package:vulpix/resources/chat_methods.dart';
 
-FirebaseRepository _repository=FirebaseRepository();
 
 class ChatScreen extends StatefulWidget {
   final User receiver;
@@ -29,6 +30,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+
+  final StorageMethods _storageMethods = StorageMethods();
+  final ChatMethods _chatMethods = ChatMethods();
+  final AuthMethods _authMethods = AuthMethods();
 
   User sender;
   String _currentUserId;
@@ -51,7 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
 
-    _repository.getCurrentUser().then((value) {
+    _authMethods.getCurrentUser().then((value) {
       _currentUserId=value.uid;   
 
       setState(() {
@@ -129,7 +134,7 @@ showEmojiContainer(){
   pickImage(ImageSource source) async {
       File selectedImage=await Utils.pickImage(source: source);
 
-      _repository.uploadImage(
+      _storageMethods.uploadImage(
         selectedImage,
         _currentUserId,
         widget.receiver.uid,
@@ -411,7 +416,7 @@ showEmojiContainer(){
     });
 
     textFieldController.text="";
-    _repository.addMessageToDb(_message,sender,widget.receiver);
+    _chatMethods.addMessageToDb(_message,sender,widget.receiver);
   }
 
   CustomAppBar customAppBar(context)

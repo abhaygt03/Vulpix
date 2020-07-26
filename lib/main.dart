@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vulpix/provider/image_upload_provider.dart';
 import 'package:vulpix/provider/userprovider.dart';
-import 'package:vulpix/resources/firebase_repository.dart';
+import 'package:vulpix/resources/auth_methods.dart';
 import 'package:vulpix/screens/login_screen.dart';
 import 'package:vulpix/screens/home_screen.dart';
 import 'package:vulpix/screens/searchscreen.dart';
@@ -19,7 +19,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  FirebaseRepository _repository = FirebaseRepository();
+    AuthMethods _authMethods = AuthMethods();
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -39,7 +40,7 @@ class _MyAppState extends State<MyApp> {
             '/search_screen':(context)=>SearchScreen(),
           },
           home: FutureBuilder(
-            future: _repository.getCurrentUser(),
+            future: _authMethods.getCurrentUser(),
             builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
               if (snapshot.hasData) {
                 return HomeScreen();

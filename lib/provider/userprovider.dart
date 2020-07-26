@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:vulpix/models/user.dart';
-import 'package:vulpix/resources/firebase_repository.dart';
+import 'package:vulpix/resources/auth_methods.dart';
+
 
 class UserProvider with ChangeNotifier{
   User _user;
-
-  FirebaseRepository _repository=FirebaseRepository();
+  AuthMethods _authMethods = AuthMethods(); 
 
   User get getUser=>_user;
 
   void refreshUser() async{
-    User user =await _repository.getUserDetails();
+    User user =await _authMethods.getUserDetails();
     _user=user;
     notifyListeners();
   }
