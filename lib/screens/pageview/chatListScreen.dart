@@ -1,33 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:vulpix/resources/auth_methods.dart';
+import 'package:vulpix/screens/pageview/widgets/new_chat_button.dart';
+import 'package:vulpix/screens/pageview/widgets/user_circle.dart';
 import 'package:vulpix/utils/universalvariables.dart';
-import 'package:vulpix/utils/utils.dart';
 import 'package:vulpix/widgets/appbar.dart';
 import 'package:vulpix/widgets/custom_tile.dart';
 
-class ChatListScreen extends StatefulWidget {
-  @override
-  _ChatListScreenState createState() => _ChatListScreenState();
-}
-
-AuthMethods _authMethods = AuthMethods();
-
-class _ChatListScreenState extends State<ChatListScreen> {
-
-  String currentUserid;
-  String initials;
-
-  @override
-  void initState() {
-
-    super.initState();
-    _authMethods.getCurrentUser().then((user) => {
-      setState((){
-        currentUserid=user.uid;
-        initials=Utils.getInitials(user.displayName);
-      })
-    });
-  }
+class ChatListScreen extends StatelessWidget {
 
     CustomAppBar customAppBar( BuildContext context)
     {
@@ -37,7 +15,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
             Icons.notifications,
             color: Colors.white), 
             onPressed: null),
-            title:UserCircle(initials),
+            title:UserCircle(),
             centerTitle: true,
             actions: <Widget>[
               IconButton(
@@ -62,20 +40,14 @@ class _ChatListScreenState extends State<ChatListScreen> {
       backgroundColor: UniversalVariables.blackColor,
       appBar: customAppBar(context),
       floatingActionButton:NewChatButton(),
-      body: ChatListContainer(currentUserid),
+      body: ChatListContainer(),
     );
   }
 }
 
-class ChatListContainer extends StatefulWidget {
-  final String currentUserId;
-  ChatListContainer(this.currentUserId);
+class ChatListContainer extends StatelessWidget {
   @override
-  _ChatListContainerState createState() => _ChatListContainerState();
-}
-
-class _ChatListContainerState extends State<ChatListContainer> {
-  @override
+  
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
@@ -123,64 +95,5 @@ class _ChatListContainerState extends State<ChatListContainer> {
   }
 }
 
-class UserCircle extends StatelessWidget {
-  final String text;
-  UserCircle(this.text);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      width: 40,
-      decoration: BoxDecoration(
-        color: UniversalVariables.separatorColor,
-        borderRadius: BorderRadius.circular(50)),
 
-        child: Stack(children: <Widget>[
-          Align(
-            child: Text(text??"",
-            style: TextStyle(
-              color:UniversalVariables.lightBlueColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 13),),
-            alignment: Alignment.center,
-          ),
 
-                   Align(
-                     alignment: Alignment.bottomRight,
-                     child: Container(
-                       height: 15,
-                       width: 15,
-                       decoration: BoxDecoration(
-                         color: UniversalVariables.onlineDotColor,
-                         shape: BoxShape.circle,
-                         border: Border.all(
-                           color:UniversalVariables.blackColor,
-                           width: 2,
-                         )
-                       ),
-                       ),)
-        ],),
-    );
-  }
-}
-
-class NewChatButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: UniversalVariables.fabGradient,
-        shape: BoxShape.circle,
-        border:Border.all(
-          width: 1,
-          color: Colors.white,
-        ),
-      ),
-      child: Icon(Icons.message,
-      color: Colors.white,
-      size: 25,
-     ),
-     padding: EdgeInsets.all(15),
-    );
-  }
-}
