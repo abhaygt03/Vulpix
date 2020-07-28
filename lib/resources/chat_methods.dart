@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:vulpix/models/contact.dart';
 import 'package:vulpix/models/message.dart';
 import 'package:vulpix/models/user.dart';
 
@@ -15,13 +16,57 @@ class ChatMethods{
         .document(message.senderId)
         .collection(message.receiverId).add(map);
 
+        addToContacts(senderId:message.senderId,receiverId:message.receiverId);
+
        return await _firestore.collection('messages')
         .document(message.receiverId)
         .collection(message.senderId).add(map);
 
     }
 
+    DocumentReference getContactsDocument(String of,String forContact){
+      return _firestore.
+      collection('users')
+      .document(of)
+      .collection('contacts')
+      .document(forContact);
+    }
 
+    addToContacts({String senderId,String receiverId}) async {
+        Timestamp currentTime=Timestamp.now();
+        await addToSendersContact(senderId, receiverId, currentTime);
+        await addToReceiversContact(senderId, receiverId, currentTime);
+    }
+
+    Future<void> addToSendersContact(String sendersId,String receiversId,currenttime)async{
+      DocumentSnapshot snapshot= await getContactsDocument(sendersId, receiversId).get();
+
+      if(!snapshot.exists)
+      {
+        Contact receiverContact=Contact(
+          uid: receiversId,
+          addedOn: currenttime
+          );
+          var senderMap=receiverContact.toMap(receiverContact);
+
+          getContactsDocument(receiversId,sendersId).setData(senderMap);
+      }
+    }
+
+Future<void> addToReceiversContact(String sendersId,String receiversId,currenttime)async{
+      DocumentSnapshot snapshot= await getContactsDocument(receiversId,sendersId).get();
+
+      if(!snapshot.exists)
+      {
+        Contact senderContact=Contact(
+          uid: sendersId,
+          addedOn: currenttime
+          );
+          var receiverMap=senderContact.toMap(senderContact);
+
+          getContactsDocument(sendersId, receiversId).setData(receiverMap);
+      }
+    }
 
     void setImageMsg(String url,String senderId,String receiverId){
 
@@ -46,5 +91,12 @@ class ChatMethods{
         .document(receiverId)
         .collection(senderId)
         .add(map);
+    }
+
+    Stream<QuerySnapshot> fetchContacts({String userId}) {
+        return _firestore.collection('users')
+        .document(userId)
+        .collection('conatcts')
+        .snapshots();
     }
 }
