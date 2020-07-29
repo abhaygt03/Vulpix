@@ -27,6 +27,22 @@ class AuthMethods{
 
   }
 
+  Future<User> getUserDetailsById(id) async{
+    try{
+      DocumentSnapshot documentSnapshot=await _userCollection.document(id).get();
+
+        return User.fromMap(documentSnapshot.data);
+
+    }
+    catch(err)
+    {
+      print(err);
+      return null;
+    }
+  }
+
+
+
     Future<FirebaseUser> signIn() async{
     GoogleSignInAccount _signInAccount=await _googleSignIn.signIn();
     GoogleSignInAuthentication _signInAuthentication=await _signInAccount.authentication;

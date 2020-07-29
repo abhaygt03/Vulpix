@@ -1,17 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vulpix/models/contact.dart';
+import 'package:vulpix/models/user.dart';
+import 'package:vulpix/provider/userprovider.dart';
+import 'package:vulpix/resources/auth_methods.dart';
+import 'package:vulpix/resources/chat_methods.dart';
+import 'package:vulpix/screens/chat_screens/chatscreen.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/widgets/custom_tile.dart';
 
 class ContactView extends StatelessWidget {
   final Contact contact;
+  final AuthMethods _authMethods=AuthMethods();
+
   ContactView(this.contact);
   @override
+  Widget build(BuildContext context) { 
+    return FutureBuilder<User>(
+      future: _authMethods.getUserDetailsById(contact.uid),
+      builder: (context,snapshot){
+        if(snapshot.hasData){
+          User user=snapshot.data;
+          return ViewLayout(contact: user);
+        }
+        return Center(child: CircularProgressIndicator(),);
+      },
+    );
+  }
+}
+
+class ViewLayout extends StatelessWidget {
+  final User contact;
+  final ChatMethods _chatMethods=ChatMethods();
+
+  ViewLayout({
+    @required this.contact
+  });
+
+  @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider=Provider.of<UserProvider>(context);
     return CustomTile(
             mini: false,
-            onTap: (){},
-            title: Text("Abhay Gautam",
+            onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatScreen(receiver: contact,))),
+            title: Text(
+                    contact.name,
                     style: TextStyle(
                       color: Colors.white,fontFamily: "Arial",fontSize: 19),),
             subtitle: Text("Yaa lets meet at the ccd",
@@ -25,7 +58,7 @@ class ContactView extends StatelessWidget {
                    CircleAvatar(
                      maxRadius: 30,
                      backgroundColor: Colors.grey,
-                     backgroundImage: NetworkImage("https://scontent.fluh3-1.fna.fbcdn.net/v/t1.0-9/78203659_621665865038336_1898394953789210624_o.jpg?_nc_cat=105&_nc_sid=09cbfe&_nc_ohc=PSSgeeaft8MAX_Pz2ZB&_nc_ht=scontent.fluh3-1.fna&oh=3980ed2e246a95d3a8519b4e7f4ef788&oe=5F2F5F27"),
+                     backgroundImage: NetworkImage(contact.profilePhoto),
                    ),
                    Align(
                      alignment: Alignment.bottomRight,

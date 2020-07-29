@@ -47,9 +47,9 @@ class ChatMethods{
           uid: receiversId,
           addedOn: currenttime
           );
-          var senderMap=receiverContact.toMap(receiverContact);
+          var receiverMap=receiverContact.toMap(receiverContact);
 
-          getContactsDocument(receiversId,sendersId).setData(senderMap);
+          getContactsDocument(sendersId,receiversId).setData(receiverMap);
       }
     }
 
@@ -62,9 +62,9 @@ Future<void> addToReceiversContact(String sendersId,String receiversId,currentti
           uid: sendersId,
           addedOn: currenttime
           );
-          var receiverMap=senderContact.toMap(senderContact);
+          var senderMap=senderContact.toMap(senderContact);
 
-          getContactsDocument(sendersId, receiversId).setData(receiverMap);
+          getContactsDocument(receiversId,sendersId).setData(senderMap);
       }
     }
 
@@ -96,7 +96,10 @@ Future<void> addToReceiversContact(String sendersId,String receiversId,currentti
     Stream<QuerySnapshot> fetchContacts({String userId}) {
         return _firestore.collection('users')
         .document(userId)
-        .collection('conatcts')
+        .collection('contacts')
         .snapshots();
     }
+
+    Stream<QuerySnapshot> fetchLastMessage({String senderId,String recerverId})=>
+    _firestore.collection('messages').document(senderId).collection(recerverId).orderBy('timestamp').snapshots();
 }

@@ -64,7 +64,7 @@ class ChatListContainer extends StatelessWidget {
               builder: (context,snapshot){
                 if(snapshot.hasData)
                 {
-                  var docList=snapshot.data.document;
+                  var docList=snapshot.data.documents;
                   if(docList.isEmpty){
                   return  QuietBox();
                   }

@@ -3,12 +3,17 @@ import 'package:vulpix/screens/searchscreen.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 
 class QuietBox extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(padding: EdgeInsets.symmetric(horizontal: 25),
       child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
         color: UniversalVariables.separatorColor,
+          ),
+
         padding: EdgeInsets.symmetric(vertical: 35,horizontal: 25),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -31,6 +36,8 @@ class QuietBox extends StatelessWidget {
             SizedBox(height: 25,),
             
             FlatButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),),
               color: UniversalVariables.lightBlueColor,
               child: Text("Start Searching"),
               onPressed: ()=>Navigator.push(context, 
