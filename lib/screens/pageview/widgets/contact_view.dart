@@ -9,6 +9,8 @@ import 'package:vulpix/screens/chat_screens/chatscreen.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/widgets/custom_tile.dart';
 
+import 'last_message.dart';
+
 class ContactView extends StatelessWidget {
   final Contact contact;
   final AuthMethods _authMethods=AuthMethods();
@@ -47,10 +49,12 @@ class ViewLayout extends StatelessWidget {
                     contact.name,
                     style: TextStyle(
                       color: Colors.white,fontFamily: "Arial",fontSize: 19),),
-            subtitle: Text("Yaa lets meet at the ccd",
-                      style: TextStyle(
-                        color: UniversalVariables.greyColor,fontSize: 14,
-                      ),), 
+            subtitle: LastMessageContainer(
+              stream: _chatMethods.fetchLastMessage(
+                senderId: userProvider.getUser.uid,
+                recerverId: contact.uid
+              ),
+            ),
              leading: Container(
                constraints: BoxConstraints(maxHeight: 60,maxWidth: 60),
                child: Stack(
