@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vulpix/enum/user_state.dart';
 
 class Utils{
 static String getUsername(String email){
@@ -22,6 +23,34 @@ PickedFile file=await _picker.getImage(source: source,
 
    File selectedImage=File(file.path);
    return selectedImage;                                
+}
+
+static int stateToNum(UserState userState){
+  switch(userState)
+  {
+    case UserState.Offline:
+    return 0;
+    
+    case UserState.Online:
+    return 1;
+    
+    default:
+    return 2;
+  }
+}
+
+static numToState(int num){
+    switch(num)
+    {
+      case 0:
+      return UserState.Offline;
+
+      case 1:
+      return UserState.Online;
+
+      default:
+      return UserState.Waiting;
+    }
 }
 
 }

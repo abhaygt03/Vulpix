@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:vulpix/enum/user_state.dart';
 import 'package:vulpix/models/user.dart';
 import 'package:vulpix/utils/utils.dart';
 
@@ -100,6 +102,15 @@ class AuthMethods{
     }
 
     
+    void setUserState({@required String userId,@required UserState userState}){
+      int stateNum=Utils.stateToNum(userState);
+      firestore.collection('users').document(userId).updateData({
+        "state":stateNum,
+      }
+      );
+    }
 
+    Stream<DocumentSnapshot> getUserStream({@required String uid})=>
+    firestore.collection('users').document(uid).snapshots();    
 
 }

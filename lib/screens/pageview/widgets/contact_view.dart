@@ -6,8 +6,8 @@ import 'package:vulpix/provider/userprovider.dart';
 import 'package:vulpix/resources/auth_methods.dart';
 import 'package:vulpix/resources/chat_methods.dart';
 import 'package:vulpix/screens/chat_screens/chatscreen.dart';
-import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/widgets/custom_tile.dart';
+import 'package:vulpix/widgets/onlineDotIndicator.dart';
 
 import 'last_message.dart';
 
@@ -56,7 +56,7 @@ class ViewLayout extends StatelessWidget {
               ),
             ),
              leading: Container(
-               constraints: BoxConstraints(maxHeight: 60,maxWidth: 60),
+               constraints: BoxConstraints(maxHeight: 55,maxWidth: 55),
                child: Stack(
                  children: <Widget>[
                    CircleAvatar(
@@ -66,18 +66,7 @@ class ViewLayout extends StatelessWidget {
                    ),
                    Align(
                      alignment: Alignment.bottomRight,
-                     child: Container(
-                       height: 15,
-                       width: 15,
-                       decoration: BoxDecoration(
-                         color: UniversalVariables.onlineDotColor,
-                         shape: BoxShape.circle,
-                         border: Border.all(
-                           color:UniversalVariables.blackColor,
-                           width: 2,
-                         )
-                       ),
-                       ),),
+                     child: OnlineDotIndicator(uid: contact.uid,)),
                  ],),
              ),                  
           );
