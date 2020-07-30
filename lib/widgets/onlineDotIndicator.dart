@@ -38,8 +38,8 @@ class OnlineDotIndicator extends StatelessWidget {
           user=User.fromMap(snapshot.data.data);
         }
         return Container(
-            height: 16,
-            width: 16,
+            height: 14.5,
+            width: 14.5,
             margin: EdgeInsets.only(right:8,top: 8),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
