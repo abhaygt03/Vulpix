@@ -79,10 +79,16 @@ class AuthMethods{
       .setData(user.toMap(user));
     }
 
-     Future<void> signOut() async{
-      await _googleSignIn.disconnect();
+     Future<bool> signOut() async{
+       try{
       await _googleSignIn.signOut();
-      return await _auth.signOut();
+      await _auth.signOut();
+      return true;
+       }
+       catch(err){
+            print(err);
+            return false;
+       }
     }
 
      Future<List<User>> fetchAllUsers(FirebaseUser currentUser) async{
