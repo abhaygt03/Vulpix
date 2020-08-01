@@ -17,7 +17,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoginPressed=false;
   @override
   Widget build(BuildContext context) {
-    _authMethods.signOut();
     return Scaffold(
       backgroundColor: UniversalVariables.blackColor,
       body: Column(
