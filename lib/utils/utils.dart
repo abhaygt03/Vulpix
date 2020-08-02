@@ -9,10 +9,15 @@ static String getUsername(String email){
 }
 
 static String getInitials(String name){
-List<String> nameSplit=name.split(" ");
-String fstname=nameSplit[0][0];
-String lstname=nameSplit[1][0];
+  if(name.contains(new RegExp(r'\s+(?=\S{1})'))&&!(name.contains("  ")))
+  {
+List<String> nameSplit=name.split(' ');
+String fstname=nameSplit[0][0].toUpperCase();
+String lstname=nameSplit[1][0].toUpperCase();
 return fstname+lstname;
+  }
+  else
+  return name[0].toUpperCase();
 } 
 
 

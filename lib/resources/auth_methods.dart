@@ -119,4 +119,10 @@ class AuthMethods{
     Stream<DocumentSnapshot> getUserStream({@required String uid})=>
     firestore.collection('users').document(uid).snapshots();    
 
+    void changeUserName({@required String name,@required String userId}) async{
+        firestore.collection("users").document(userId).updateData({
+          "name":name,
+        });
+    }
+
 }
