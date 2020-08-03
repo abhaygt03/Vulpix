@@ -4,6 +4,7 @@ class User {
   String email;
   String username;
   String status;
+  String quote;
   int state;
   String profilePhoto;
 
@@ -15,6 +16,7 @@ class User {
     this.status,
     this.state,
     this.profilePhoto,
+    this.quote="",
   });
 
   Map toMap(User user) {
@@ -26,6 +28,7 @@ class User {
     data["status"] = user.status;
     data["state"] = user.state;
     data["profile_photo"] = user.profilePhoto;
+    data["quote"]=user.quote;
     return data;
   }
 
@@ -37,5 +40,6 @@ class User {
     this.status = mapData['status'];
     this.state = mapData['state'];
     this.profilePhoto = mapData['profile_photo'];
+    this.quote=mapData["quote"];
   }
 }

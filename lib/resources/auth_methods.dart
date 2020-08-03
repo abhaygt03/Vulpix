@@ -125,4 +125,10 @@ class AuthMethods{
         });
     }
 
+       void changeUserQuote({@required String quote,@required String userId}) async{
+        firestore.collection("users").document(userId).updateData({
+          "quote":quote,
+        });
+    }
+
 }

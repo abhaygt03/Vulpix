@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vulpix/enum/user_state.dart';
 import 'package:vulpix/models/user.dart';
 import 'package:vulpix/provider/userprovider.dart';
 import 'package:vulpix/resources/auth_methods.dart';
@@ -156,14 +155,17 @@ class UserDetailsBody extends StatefulWidget {
 }
 
 class _UserDetailsBodyState extends State<UserDetailsBody> {
-  bool edit=false;
+  bool editName=false;
+  bool editquote=false;
   IconData ic=Icons.edit;
   AuthMethods authMethods=AuthMethods();
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
      User user=userProvider.getUser;
-    TextEditingController controller=TextEditingController(text: user.name);
+     TextEditingController controller=TextEditingController(text: user.name);
+     TextEditingController quotecontroller=TextEditingController(text: user.quote!=null?user.quote:"");
+
     void refresh(){
       userProvider.refreshUser();
       user=userProvider.getUser;
@@ -187,7 +189,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody> {
                        SizedBox(width: 60,),
                        Expanded(
                                 child: Center(
-                                  child: (!edit)?
+                                  child: (!editName)?
                                   (Text(
                                  user.name,
                              style: TextStyle(
@@ -210,13 +212,62 @@ class _UserDetailsBodyState extends State<UserDetailsBody> {
                            onPressed: (){
                            
                              setState((){
-                          if(edit)
+                          if(editName)
                             {
                              authMethods.changeUserName(name: controller.text, userId: user.uid);
                              refresh();
                             }
-                             edit=!edit;
-                             if(edit)
+                             editName=!editName;
+                             if(editName)
+                             ic=Icons.check;
+                             else
+                             ic=Icons.edit;
+                           }
+                           );
+                           
+                           },),
+                       SizedBox(width: 10,),
+                     ],
+                   ),
+
+
+
+
+                   Row(
+                     children: <Widget>[
+                       SizedBox(width: 60,),
+                       Expanded(
+                                child: Center(
+                                  child: (!editquote)?
+                                  (Text(
+                                 user.quote!=null?user.quote:"",
+                             style: TextStyle(
+                               fontWeight: FontWeight.bold,
+                               fontSize: 22,
+                               color: Colors.white
+                             ),))
+                             :(TextField(
+                             controller: quotecontroller,
+                             textAlign: TextAlign.center,
+                             style: TextStyle(
+                               fontWeight: FontWeight.bold,
+                               fontSize: 22,
+                               color: Colors.white
+                             ),)),
+                                ),
+                                ),
+                           IconButton(icon: Icon(ic),
+                           iconSize: 27,
+                           onPressed: (){
+                           
+                             setState((){
+                          if(editquote)
+                            {
+                             authMethods.changeUserQuote(quote: quotecontroller.text, userId: user.uid);
+                             refresh();
+                            }
+                             editquote=!editquote;
+                             if(editquote)
                              ic=Icons.check;
                              else
                              ic=Icons.edit;
