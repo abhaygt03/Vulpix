@@ -41,5 +41,16 @@ class StorageMethods{
 
         chatMethods.setImageMsg(url,senderId,receiverId);
     }
+
+     Future<void> uploadProfilePic(File image,String userId,ImageUploadProvider imageUploadProvider) async{
+        imageUploadProvider.setToLoading();
+
+        String url=await uploadImageToStorage(image);
+
+        imageUploadProvider.setToIdle();
+
+        firestore.collection("users").document(userId).updateData({
+          "profile_photo":url});
+    }
  
 }

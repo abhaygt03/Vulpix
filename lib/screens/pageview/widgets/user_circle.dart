@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vulpix/provider/userprovider.dart';
 import 'package:vulpix/screens/pageview/widgets/user_detaildContainer.dart';
+import 'package:vulpix/screens/pageview/widgets/user_profile.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/utils/utils.dart';
 
@@ -14,7 +15,7 @@ class UserCircle extends StatelessWidget {
           onTap: (){
             return showModalBottomSheet(
               context: context, 
-              builder: (context)=>UserDetailsContainer(),
+              builder: (context)=>MyApp(),
               isScrollControlled: true,
               backgroundColor: UniversalVariables.blackColor);
           },

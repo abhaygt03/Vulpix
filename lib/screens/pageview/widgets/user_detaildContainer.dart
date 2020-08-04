@@ -173,15 +173,33 @@ class _UserDetailsBodyState extends State<UserDetailsBody> {
     return Container(
       padding: EdgeInsets.only(top:35),
       child: Column(children: <Widget>[
-       CircleAvatar(
-              radius: 58,
-              backgroundColor: Colors.lightBlueAccent,
-              child:CircleAvatar(
-                           maxRadius: 53,
-                           backgroundColor: Colors.grey,
-                           backgroundImage: NetworkImage(user.profilePhoto),
+      Stack(
+        children: <Widget>[
+          Align(
+                      child: CircleAvatar(
+                               maxRadius: 55,
+                               backgroundColor: Colors.grey,
+                               backgroundImage: NetworkImage(user.profilePhoto),
+                             ),
+                             alignment: Alignment.center,
+          ),
+                            Align(
+                       alignment: Alignment.bottomRight,
+                       child: Container(
+                         height: 15,
+                         width: 15,
+                         decoration: BoxDecoration(
+                           color: Colors.green,
+                           shape: BoxShape.circle,
+                           border: Border.all(
+                             color:Colors.black,
+                             width: 2,
+                           )
                          ),
-            ),
+                         ),)
+        ],
+             
+      ),
                    SizedBox(height: 12,),
 
                    Row(

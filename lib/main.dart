@@ -38,6 +38,7 @@ class _MyAppState extends State<MyApp> {
           initialRoute: "/",
           routes: {
             '/search_screen':(context)=>SearchScreen(),
+            '/home_screen':(context)=>HomeScreen(),
           },
           home: FutureBuilder(
             future: _authMethods.getCurrentUser(),
