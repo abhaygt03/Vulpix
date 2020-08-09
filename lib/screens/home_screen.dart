@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:vulpix/const/profilepage_constants.dart';
 import 'package:vulpix/enum/user_state.dart';
+import 'package:vulpix/provider/themeprovider.dart';
 import 'package:vulpix/provider/userprovider.dart';
 import 'package:vulpix/resources/auth_methods.dart';
 import 'package:vulpix/screens/call_screens/pick_up/pickup_layout.dart';
@@ -89,9 +91,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   
   @override
   Widget build(BuildContext context) {
+    Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
     return  PickupLayout(
        scaffold:Scaffold(
-        backgroundColor: UniversalVariables.blackColor,
+        backgroundColor:(themeProvider.theme=="D")?UniversalVariables.blackColor: kLightSecondaryColor,
         body: PageView(children: <Widget>[
           Container(child: ChatListScreen(),),
           Center(child: Text("Call Logs",style:TextStyle(color: Colors.white),),),
@@ -102,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         onPageChanged: onpagechange),
         bottomNavigationBar: Container(
           child:Padding(padding: EdgeInsets.symmetric(vertical:10),
-          child: CupertinoTabBar(backgroundColor: UniversalVariables.blackColor,
+          child: CupertinoTabBar(backgroundColor:(themeProvider.theme=="D")?UniversalVariables.blackColor: kLightSecondaryColor,
           items: <BottomNavigationBarItem>[
 
             buildBottomNavigationBarItem(0,"Chats",Icons.chat),

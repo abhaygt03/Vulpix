@@ -7,6 +7,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
   final List<Widget> actions;
   final Widget leading;
   final bool centerTitle;
+  final String backcolor;
 
   const CustomAppBar({
     Key key,
@@ -14,12 +15,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
     @required this.actions,
     @required this.leading,
     @required this.centerTitle,
+    this.backcolor="D",
   }):super(key:key);
   @override
   Widget build(BuildContext context) {
     return Container(
       child: AppBar(
-        backgroundColor: UniversalVariables.blackColor,
+        backgroundColor: (backcolor=="D")?UniversalVariables.blackColor:Colors.red,
         leading: leading,
         elevation: 0,
         actions:actions,
@@ -29,15 +31,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
       
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: UniversalVariables.blackColor,
+        color: (backcolor=="D")?UniversalVariables.blackColor:Colors.red,
         border: Border(bottom:BorderSide(
-          color: UniversalVariables.separatorColor,
+          color: (backcolor=="D")?UniversalVariables.separatorColor:Colors.red,
           width: 1.4,
-          style: BorderStyle.solid))
+          style: BorderStyle.solid)),
       ),
 
       
     );
   }
-  final Size preferredSize=const Size.fromHeight(kToolbarHeight+10);
+  final Size preferredSize=const Size.fromHeight(kToolbarHeight+20);
 }

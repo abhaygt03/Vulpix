@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vulpix/enum/user_state.dart';
 import 'package:vulpix/models/user.dart';
+import 'package:vulpix/provider/themeprovider.dart';
 import 'package:vulpix/resources/auth_methods.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/utils/utils.dart';
@@ -15,6 +17,8 @@ class OnlineDotIndicator extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    final Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
+
   AuthMethods _authMethods=AuthMethods();
 
     getColor(int state){
@@ -45,8 +49,8 @@ class OnlineDotIndicator extends StatelessWidget {
               shape: BoxShape.circle,
               color:getColor(user?.state),
               border: Border.all(
-                           color:UniversalVariables.blackColor,
-                           width: 2.5,
+          color: (themeProvider.theme=="D")?UniversalVariables.blackColor:Colors.white,
+                           width: 2.2,
                          )
             ),
         );

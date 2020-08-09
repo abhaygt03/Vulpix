@@ -1,5 +1,7 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vulpix/provider/themeprovider.dart';
 import 'package:vulpix/provider/userprovider.dart';
 import 'package:vulpix/screens/pageview/widgets/user_detaildContainer.dart';
 import 'package:vulpix/screens/pageview/widgets/user_profile.dart';
@@ -11,6 +13,7 @@ class UserCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider=Provider.of<UserProvider>(context);
+    final Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
     return GestureDetector(
           onTap: (){
             return showModalBottomSheet(
@@ -22,10 +25,10 @@ class UserCircle extends StatelessWidget {
 
 
           child: Container(
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
         decoration: BoxDecoration(
-          color: UniversalVariables.separatorColor,
+          color: (themeProvider.theme=="D")?UniversalVariables.separatorColor:Colors.grey[300],
           borderRadius: BorderRadius.circular(50)),
 
           child: Stack(children: <Widget>[
@@ -48,7 +51,7 @@ class UserCircle extends StatelessWidget {
                            color: UniversalVariables.onlineDotColor,
                            shape: BoxShape.circle,
                            border: Border.all(
-                             color:UniversalVariables.blackColor,
+                             color:(themeProvider.theme=="D")?UniversalVariables.blackColor:Colors.white60,
                              width: 2,
                            )
                          ),

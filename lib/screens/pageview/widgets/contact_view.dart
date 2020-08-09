@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vulpix/models/contact.dart';
 import 'package:vulpix/models/user.dart';
+import 'package:vulpix/provider/themeprovider.dart';
 import 'package:vulpix/provider/userprovider.dart';
 import 'package:vulpix/resources/auth_methods.dart';
 import 'package:vulpix/resources/chat_methods.dart';
@@ -18,12 +19,13 @@ class ContactView extends StatelessWidget {
   ContactView(this.contact);
   @override
   Widget build(BuildContext context) { 
+    Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
     return FutureBuilder<User>(
       future: _authMethods.getUserDetailsById(contact.uid),
       builder: (context,snapshot){
         if(snapshot.hasData){
           User user=snapshot.data;
-          return ViewLayout(contact: user);
+          return ViewLayout(contact: user,thcolor: themeProvider.theme,);
         }
         return Center(child: CircularProgressIndicator(),);
       },
@@ -34,10 +36,13 @@ class ContactView extends StatelessWidget {
 class ViewLayout extends StatelessWidget {
   final User contact;
   final ChatMethods _chatMethods=ChatMethods();
-
+  final String thcolor;
   ViewLayout({
-    @required this.contact
+    @required this.contact,
+    @required this.thcolor
   });
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +53,8 @@ class ViewLayout extends StatelessWidget {
             title: Text(
                     contact.name,
                     style: TextStyle(
-                      color: Colors.white,fontFamily: "Arial",fontSize: 19),),
+                      fontWeight: FontWeight.w500,
+                      color:(thcolor=="D")? Colors.white:Colors.black,fontFamily: "Arial",fontSize: 19),),
             subtitle: LastMessageContainer(
               stream: _chatMethods.fetchLastMessage(
                 senderId: userProvider.getUser.uid,
@@ -56,7 +62,7 @@ class ViewLayout extends StatelessWidget {
               ),
             ),
              leading: Container(
-               constraints: BoxConstraints(maxHeight: 55,maxWidth: 55),
+               constraints: BoxConstraints(maxHeight: 58,maxWidth: 58),
                child: Stack(
                  children: <Widget>[
                    CircleAvatar(

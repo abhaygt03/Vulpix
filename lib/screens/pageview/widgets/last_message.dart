@@ -20,13 +20,13 @@ class LastMessageContainer extends StatelessWidget {
             Message message=Message.fromMap(docList.last.data);
 
             return SizedBox(
-              width: MediaQuery.of(context).size.width*0.6,
+              width: MediaQuery.of(context).size.width*0.7,
               child: Text(
                 message.message,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color:Colors.grey,
+                  color:Colors.grey[600],
                   fontSize: 14
                 ),
               ),

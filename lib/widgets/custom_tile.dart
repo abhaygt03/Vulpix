@@ -38,13 +38,13 @@ class CustomTile extends StatelessWidget {
             leading,
             Expanded(
               child: Container(
-                margin: EdgeInsets.only(left:mini?10:15),
-                padding: EdgeInsets.symmetric(vertical: mini?3:20),
+                margin: EdgeInsets.only(left:mini?10:13),
+                padding: EdgeInsets.symmetric(vertical: mini?3:15),
                 decoration: BoxDecoration(
                   border: Border(
                   bottom: BorderSide(
-                    width: 1,
-                    color: UniversalVariables.separatorColor
+                    width: 0.6,
+                    color: Colors.grey
                   ),),),
                 
                 child: Row(
@@ -53,8 +53,14 @@ class CustomTile extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        title,
-                        SizedBox(height:5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            title,
+                            Text("Yesterday")
+                          ],
+                        ),
+                        SizedBox(height:8),
                         Row(
                           children: <Widget>[
                             icon!=null?icon:Container(),

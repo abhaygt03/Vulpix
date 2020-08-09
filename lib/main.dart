@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vulpix/provider/image_upload_provider.dart';
+import 'package:vulpix/provider/themeprovider.dart';
 import 'package:vulpix/provider/userprovider.dart';
 import 'package:vulpix/resources/auth_methods.dart';
 import 'package:vulpix/screens/login_screen.dart';
@@ -13,7 +14,6 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  // This widget is the root of your application.
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
         providers: [
           ChangeNotifierProvider(create: (context)=>ImageUploadProvider()),
           ChangeNotifierProvider(create: (context)=>UserProvider()),
+          ChangeNotifierProvider(create: (context)=>Theme_Provider()),
           
         ],
           child: MaterialApp(

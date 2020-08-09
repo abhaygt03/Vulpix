@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vulpix/const/profilepage_constants.dart';
 import 'package:vulpix/models/contact.dart';
+import 'package:vulpix/provider/themeprovider.dart';
 import 'package:vulpix/provider/userprovider.dart';
 import 'package:vulpix/resources/chat_methods.dart';
 import 'package:vulpix/screens/pageview/widgets/contact_view.dart';
@@ -14,11 +16,14 @@ class ChatListScreen extends StatelessWidget {
 
     CustomAppBar customAppBar( BuildContext context)
     {
+    Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
+
       return CustomAppBar(
+        backcolor: themeProvider.theme,
         leading:IconButton(
           icon: Icon(
             Icons.notifications,
-            color: Colors.white), 
+            color: Colors.white),
             onPressed: null),
             title:UserCircle(),
             centerTitle: true,
@@ -41,8 +46,10 @@ class ChatListScreen extends StatelessWidget {
     }
   @override
   Widget build(BuildContext context) {
+    Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
+
     return Scaffold(
-      backgroundColor: UniversalVariables.blackColor,
+      backgroundColor:(themeProvider.theme=="D")?UniversalVariables.blackColor: kLightSecondaryColor,
       appBar: customAppBar(context),
       floatingActionButton:NewChatButton(),
       body: ChatListContainer(),

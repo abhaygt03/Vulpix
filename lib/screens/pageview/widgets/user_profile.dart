@@ -10,6 +10,7 @@ import 'package:vulpix/const/profilepage_constants.dart';
 import 'package:vulpix/enum/view_state.dart';
 import 'package:vulpix/models/user.dart';
 import 'package:vulpix/provider/image_upload_provider.dart';
+import 'package:vulpix/provider/themeprovider.dart';
 import 'package:vulpix/provider/userprovider.dart';
 import 'package:vulpix/resources/auth_methods.dart';
 import 'package:vulpix/resources/storage_methods.dart';
@@ -55,6 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     AuthMethods authMethods=AuthMethods();
     _imageUploadProvider=Provider.of<ImageUploadProvider>(context);
     final UserProvider userProvider=Provider.of<UserProvider>(context);
+    final Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
     User user=userProvider.getUser;
     
     ScreenUtil.init(context, height: 896, width: 414, allowFontScaling: true);
@@ -159,16 +161,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ? CrossFadeState.showFirst
                   : CrossFadeState.showSecond,
           firstChild: GestureDetector(
-            onTap: () =>
-                ThemeSwitcher.of(context).changeTheme(theme: kLightTheme),
+            onTap: () {
+                ThemeSwitcher.of(context).changeTheme(theme: kLightTheme);
+                themeProvider.changeTheme();
+            },
             child: Icon(
               LineAwesomeIcons.sun,
               size: ScreenUtil().setSp(kSpacingUnit.w * 3),
             ),
           ),
           secondChild: GestureDetector(
-            onTap: () =>
-                ThemeSwitcher.of(context).changeTheme(theme: kDarkTheme),
+            onTap: (){
+                ThemeSwitcher.of(context).changeTheme(theme: kDarkTheme);
+                themeProvider.changeTheme();
+            },
             child: Icon(
               LineAwesomeIcons.moon,
               size: ScreenUtil().setSp(kSpacingUnit.w * 3),
