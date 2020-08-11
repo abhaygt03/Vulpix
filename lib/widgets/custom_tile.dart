@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vulpix/utils/universalvariables.dart';
 
 class CustomTile extends StatelessWidget {
  

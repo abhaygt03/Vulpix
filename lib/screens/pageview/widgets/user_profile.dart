@@ -23,8 +23,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
     return ThemeProvider(
-      initTheme: kDarkTheme,
+      initTheme: (themeProvider.theme=="D")?kDarkTheme:kLightTheme,
       child: Builder(
         builder: (context) {
           return MaterialApp(
@@ -167,7 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
             child: Icon(
               LineAwesomeIcons.sun,
-              size: ScreenUtil().setSp(kSpacingUnit.w * 3),
+              size: ScreenUtil().setSp(kSpacingUnit.w * 3.7),
             ),
           ),
           secondChild: GestureDetector(
@@ -177,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
             child: Icon(
               LineAwesomeIcons.moon,
-              size: ScreenUtil().setSp(kSpacingUnit.w * 3),
+              size: ScreenUtil().setSp(kSpacingUnit.w * 3.7),
             ),
           ),
         );

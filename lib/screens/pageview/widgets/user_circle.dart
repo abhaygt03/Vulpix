@@ -1,9 +1,7 @@
-import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vulpix/provider/themeprovider.dart';
 import 'package:vulpix/provider/userprovider.dart';
-import 'package:vulpix/screens/pageview/widgets/user_detaildContainer.dart';
 import 'package:vulpix/screens/pageview/widgets/user_profile.dart';
 import 'package:vulpix/utils/universalvariables.dart';
 import 'package:vulpix/utils/utils.dart';
