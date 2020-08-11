@@ -48,6 +48,13 @@ class ViewLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserProvider userProvider=Provider.of<UserProvider>(context);
     return CustomTile(
+            trailing:  LastMessageContainer(
+              requirement: "time",
+              stream: _chatMethods.fetchLastMessage(
+                senderId: userProvider.getUser.uid,
+                recerverId: contact.uid
+              ), 
+              ),
             mini: false,
             onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatScreen(receiver: contact,))),
             title: Text(
@@ -56,6 +63,7 @@ class ViewLayout extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color:(thcolor=="D")? Colors.white:Colors.black,fontFamily: "Arial",fontSize: 19),),
             subtitle: LastMessageContainer(
+              requirement: "lastmsg",
               stream: _chatMethods.fetchLastMessage(
                 senderId: userProvider.getUser.uid,
                 recerverId: contact.uid

@@ -4,14 +4,19 @@ import 'package:vulpix/models/message.dart';
 
 class LastMessageContainer extends StatelessWidget {
   final stream;
+  final requirement;
   LastMessageContainer({
-    @required this.stream
+    @required this.stream,
+    @required this.requirement
   }); 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: stream,
       builder:(context,AsyncSnapshot<QuerySnapshot> snapshot){
+        
+        if(requirement=="lastmsg")
+        {
         if(snapshot.hasData)
         {
           var docList=snapshot.data.documents;
@@ -46,7 +51,39 @@ class LastMessageContainer extends StatelessWidget {
                   fontSize: 14
                 ),
               );
+        }
 
+        else if(requirement=="time")
+        {
+          if(snapshot.hasData)
+        {
+          var docList=snapshot.data.documents;
+
+          if(docList.isNotEmpty){
+            Message message=Message.fromMap(docList.last.data);
+            var msgstamp=message.timestamp.toDate();
+            var msgdate=DateTime(msgstamp.year,msgstamp.month,msgstamp.day,msgstamp.hour,msgstamp.minute,msgstamp.second);
+            var now=DateTime.now();
+            String text;
+            final difference=now.difference(msgdate).inSeconds;
+            if(difference<60)
+            text="secs ago";
+            else if(difference<3600)
+            text=(difference~/60).toString()+"m ago";
+            else if(difference<86400)
+            text=(difference~/3600).toString()+"h ago";
+            else if(difference<864000)
+            text=(difference~/86400).toString()+"d ago";
+            else if(difference<2592000)
+            text=(difference~/604800).toString()+"w ago";
+            else
+            text=msgstamp.day.toString()+"/"+msgstamp.month.toString()+"/"+msgstamp.year.toString();
+            return Text(text!=null?text:"");
+          }
+        }
+        }
+
+        return Container();
       });
   }
 }

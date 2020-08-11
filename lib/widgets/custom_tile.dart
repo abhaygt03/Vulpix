@@ -27,50 +27,46 @@ class CustomTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      onLongPress: onLongPress,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: mini?10:0) ,
-        margin: margin,
-        child: Row(
-          children: <Widget>[
-            leading,
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(left:mini?10:13),
-                padding: EdgeInsets.symmetric(vertical: mini?3:15),
-                decoration: BoxDecoration(
-                  border: Border(
-                  bottom: BorderSide(
-                    width: 0.6,
-                    color: Colors.grey
-                  ),),),
-                
-                child: Row(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        child: Container(
+    padding: EdgeInsets.symmetric(horizontal: mini?10:0) ,
+    margin: margin,
+    child: Row(
+      children: <Widget>[
+        leading,
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.only(left:mini?10:13),
+            padding: EdgeInsets.symmetric(vertical: mini?3:15),
+            decoration: BoxDecoration(
+              border: Border(
+              bottom: BorderSide(
+                width: 0.6,
+                color: Colors.grey
+              ),),),
+            
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            title,
-                            Text("Yesterday")
-                          ],
-                        ),
-                        SizedBox(height:8),
-                        Row(
-                          children: <Widget>[
-                            icon!=null?icon:Container(),
-                            subtitle,
-                          ],
-                        )
-                      ],
-                    ),
-                    trailing!=null?trailing:Container(),
-                  ],),),),
-          ],),),
-    );
+                    title,
+            trailing!=null?trailing:Container(),
+                  ],
+                ),
+                SizedBox(height:8),
+                Row(
+                  children: <Widget>[
+                    icon!=null?icon:Container(),
+                    subtitle,
+
+                  ],
+                )
+              ],
+            ),),),
+      ],),),
+      );
   }
 }
