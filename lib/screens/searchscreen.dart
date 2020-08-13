@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:vulpix/models/user.dart';
+import 'package:vulpix/provider/themeprovider.dart';
 import 'package:vulpix/resources/auth_methods.dart';
 import 'package:vulpix/screens/chat_screens/chatscreen.dart';
 import 'package:vulpix/utils/universalvariables.dart';
@@ -79,7 +81,7 @@ TextEditingController searchController=TextEditingController();
     );
   }
 
-  buildSuggestion(String query)
+  buildSuggestion(String query,String theme)
   {
     final List<User> suggestionList=query.isEmpty?[]:
               userList.where((User user) => 
@@ -111,7 +113,7 @@ TextEditingController searchController=TextEditingController();
                     title: Text(
                       searchedUser.username,
                       style: TextStyle(
-                        color:Colors.white,
+                        color:(theme=="D")?Colors.white:Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ), 
@@ -126,12 +128,14 @@ TextEditingController searchController=TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
+
     return Scaffold(
-      backgroundColor: UniversalVariables.blackColor,
+      backgroundColor: (themeProvider.theme=="D")?UniversalVariables.blackColor:Colors.white,
       appBar: searchAppBar(context),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal:20),
-        child:buildSuggestion(query),
+        child:buildSuggestion(query,themeProvider.theme),
       ),
     );
   }

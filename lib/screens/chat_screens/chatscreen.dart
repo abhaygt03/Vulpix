@@ -10,6 +10,7 @@ import 'package:vulpix/enum/view_state.dart';
 import 'package:vulpix/models/message.dart';
 import 'package:vulpix/models/user.dart';
 import 'package:vulpix/provider/image_upload_provider.dart';
+import 'package:vulpix/provider/themeprovider.dart';
 import 'package:vulpix/screens/call_screens/pick_up/pickup_layout.dart';
 import 'package:vulpix/utils/call_utilities.dart';
 import 'package:vulpix/utils/permissions.dart';
@@ -83,31 +84,48 @@ showEmojiContainer(){
     });
   }
 
+  var theImage=AssetImage("lib/const/doodle.jpg");
+  var theImage2=AssetImage("lib/const/lightdoodle.jpg");
+    @override
+  void didChangeDependencies() {
+    precacheImage(theImage, context);
+    precacheImage(theImage2, context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     _imageUploadProvider=Provider.of<ImageUploadProvider>(context);
+    Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
 
     return PickupLayout(
-          scaffold: Scaffold(
-        backgroundColor: UniversalVariables.blackColor,
+          scaffold: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image:(themeProvider.theme=="D")? theImage:theImage2,fit: BoxFit.cover),
+            ),
+            child: Scaffold(
+        // backgroundColor: UniversalVariables.blackColor,
+        backgroundColor: Colors.transparent,
         appBar: customAppBar(context),
         body: Column( 
-          children: <Widget>[
-            Flexible(         //Or we can use expandable
-              child: messageList(),
-            ),
+            children: <Widget>[
+              Flexible(         //Or we can use expandable
+                child: messageList(),
+              ),
 
-            _imageUploadProvider.getViewState==ViewState.LOADING?
-            Container(alignment: Alignment.centerRight,
-            margin: EdgeInsets.only(right: 15),
-            child: CircularProgressIndicator(),)
-            :Container(),
-            chatControls(),
+              _imageUploadProvider.getViewState==ViewState.LOADING?
+              Container(alignment: Alignment.centerRight,
+              margin: EdgeInsets.only(right: 15),
+              child: CircularProgressIndicator(),)
+              :Container(),
+              chatControls(context),
 
-            showEmojiPicker?Container(child: emojiContainer(),):Container(),
-          ],
+              showEmojiPicker?Container(child: emojiContainer(),):Container(),
+            ],
         ),
         ),
+          ),
     );
       
   }
@@ -186,8 +204,7 @@ showEmojiContainer(){
             
             child:_message.senderId==_currentUserId? 
             messageLayout(_message,senderBubble,pad):
-
-          messageLayout(_message,receiverBubble,pad),
+            messageLayout(_message,receiverBubble,pad),
           )
         );
     }
@@ -231,7 +248,9 @@ showEmojiContainer(){
 
     ScrollController _listScrollController=ScrollController();
 
-  Widget chatControls(){
+  Widget chatControls(context){
+    Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
+    var theme=themeProvider.theme;
     return Container(
       padding:EdgeInsets.all(10),
       child:Row(children: <Widget>[
@@ -278,7 +297,7 @@ showEmojiContainer(){
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
                 filled: true,
-                fillColor: UniversalVariables.separatorColor,
+                fillColor: (theme=="D")?UniversalVariables.separatorColor:Colors.white,
 
               ),
             ),
@@ -296,17 +315,17 @@ showEmojiContainer(){
                     hideKeyboard();
                   }
                 },
-                icon: Icon(Icons.face),
+                icon: Icon(Icons.face,color: (theme=="D")?Colors.white:Colors.grey[500],),
               )
             ]
           ),),
 
          isWriting ?Container():Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Icon(Icons.keyboard_voice,size: 30)),
+            child: Icon(Icons.keyboard_voice,size: 30,color: (theme=="D")?Colors.white:Colors.grey[600],)),
 
            isWriting ?Container(): GestureDetector(
-             child: Icon(Icons.camera_alt,size: 30),
+             child: Icon(Icons.camera_alt,size: 30,color: (theme=="D")?Colors.white:Colors.grey[600],),
             onTap: ()=>pickImage(ImageSource.camera)),
 
           isWriting? Container(
@@ -421,7 +440,10 @@ showEmojiContainer(){
 
   CustomAppBar customAppBar(context)
   {
+    Theme_Provider themeProvider=Provider.of<Theme_Provider>(context);
     return CustomAppBar(
+      backcolor: themeProvider.theme,
+
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: (){
@@ -434,7 +456,7 @@ showEmojiContainer(){
       ), 
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.video_call),
+          icon: Icon(Icons.video_call,size: 32,),
           onPressed: () async =>
           await Permissions.cameraAndMicrophonePermissionsGranted()?
           CallUtils.dial(

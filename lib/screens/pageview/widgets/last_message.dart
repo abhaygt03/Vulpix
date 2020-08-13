@@ -78,7 +78,7 @@ class LastMessageContainer extends StatelessWidget {
             text=(difference~/604800).toString()+"w ago";
             else
             text=msgstamp.day.toString()+"/"+msgstamp.month.toString()+"/"+msgstamp.year.toString();
-            return Text(text!=null?text:"");
+            return Text(text!=null?text:"",style: TextStyle(color:Colors.grey),);
           }
         }
         }
