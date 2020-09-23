@@ -4,4 +4,7 @@ A flutter based app for video calling, chatting  and media sharing working on bo
 
 ## Getting Started
 
-<img src="https://i.imgur.com/vd5f2ic.png" height="500px" width="250px">
+<img src="https://i.imgur.com/vd5f2ic.png" height="500px" width="350px">
+<img src="https://i.imgur.com/JTbtWeQ.png" height="500px" width="350px">
+<img src="https://i.imgur.com/khPZe1o.png" height="500px" width="350px">
+
